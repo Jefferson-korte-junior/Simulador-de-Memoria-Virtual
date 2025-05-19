@@ -1,0 +1,132 @@
+body {
+    font-family: 'Helvetica', sans-serif;
+    background-color: #3B3B3B;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    text-align: center;
+    padding: 20px;
+}
+
+.frame-memoria {
+    display: flex;
+    background-color: #f0f0f0;
+    gap: 2px;
+    width: 90%;
+    height: 100px;
+    margin: 20px auto;
+    border: 3px solid #555;
+    position: relative;
+    padding: 10px;
+}
+
+.frame-botoes {
+    margin: 20px auto;
+}
+
+button {
+    background-color: #ff0008;
+    border: 5px solid black;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #700a0a;
+}
+
+.frame-subrotinas {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+}
+
+.subrotinas {
+    width: 30%;
+    height: 300px; /* Define uma altura fixa */
+    background-color: #635f5ffd;
+    border: 3px solid #000000;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap; /* Empilha os itens verticalmente */
+    justify-content: flex-start;
+    padding: 10px;
+    color: white;
+    overflow-y: auto; /* Adiciona barra de rolagem vertical */
+    overflow-x: hidden; /* Remove barra de rolagem horizontal */
+    gap: 0px; /* Espaçamento entre as subrotinas */
+}
+
+.rotina-principal {
+    background-color: rgb(210, 231, 73);
+    width: 20%;
+    height: 60px;
+    float: left;
+    text-align: center;
+    padding: 19px;
+    border: 2px solid #555;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.subrotina {
+    flex: 1 1 calc(20% - 10px);
+    width: calc(33.33% - 10px);
+    height: 80px;
+    float: left;
+    text-align: center;
+    padding: 5px;
+    border: 2px solid #555;
+    border-radius: 5px;
+    margin-right: 10px;
+    background-color: #3496ff;
+    display: flex;
+    justify-content: center; /* Alinha o texto horizontalmente */
+    align-items: center;
+}
+
+
+/* Estilo para subrotinas em execução */
+
+.subrotina.fila {
+    border: 3px solid red; /* Borda vermelha para subrotinas em fila */
+    background-color: #fd060e;
+    padding: 2px;
+}
+
+.subrotina.concluida {
+    border: 3px solid green; /* Borda verde para subrotinas concluídas */
+    background-color: green;
+}
+
+.subrotina.espera {
+    border: 3px solid orange; /* Borda laranja para subrotinas em espera */
+    background-color: orange;
+}
+
+
+
+/* Estilo de paginação */
+
+#label-paginacao {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+}
+
+.subespaco-paginacao {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.espaco-memoria {
+    border-radius: 4px;
+    margin-left: 10px;
+}
