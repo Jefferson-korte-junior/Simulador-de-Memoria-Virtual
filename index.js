@@ -203,7 +203,7 @@ const atualizarLabels = () => {
     const labelPaginacao = document.getElementById("label-paginacao");
     labelPaginacao.innerHTML = "Paginação:";
 
-    const blocos = 8;
+    const blocos = 10; //Numero de blocos (subrotinas) que sera exibido
     const tamanhoBloco = 1024;
 
     for (let i = 0; i < blocos; i++) {

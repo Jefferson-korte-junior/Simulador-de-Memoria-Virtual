@@ -34,6 +34,7 @@ button {
     font-size: 16px;
     margin: 5px;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 button:hover {
@@ -117,6 +118,8 @@ button:hover {
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
+    height: 450px;
+    overflow-y: auto;  
 }
 
 .subespaco-paginacao {
