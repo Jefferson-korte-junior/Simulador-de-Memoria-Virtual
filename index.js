@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const subrotinasConcluidas = document.getElementById("subrotinas-concluidas"); // Label para exibir subrotinas concluídas
     const botaoPaginacao = document.getElementById("botao-iniciar-paginacao"); //Botao iniciar paginação
 
+    const titulo_memoria = document.getElementById("titulo-memoria"); // Título da memória
+
 
     // Variáveis para gerenciamento das subrotinas
     let filaSubrotinas = []; // Lista de subrotinas na fila
@@ -185,11 +187,20 @@ const atualizarLabels = () => {
     });
 
 
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+/* Relacionado a paginação */
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+
     botaoPaginacao.addEventListener("click", () => {
         // Esconde as labels normais
         subrotinasAtivas.style.display = "none";
         subrotinasFila.style.display = "none";
         subrotinasConcluidas.style.display = "none";
+
+        titulo_memoria.textContent = "Memória Virtual"; // Altera o título da memória
 
         // Mostra a label de paginação
         document.getElementById("label-paginacao").style.display = "flex";
@@ -203,14 +214,16 @@ const atualizarLabels = () => {
     const labelPaginacao = document.getElementById("label-paginacao");
     labelPaginacao.innerHTML = "Paginação:";
 
-    const blocos = 10; //Numero de blocos (subrotinas) que sera exibido
+    const blocos = 10;
     const tamanhoBloco = 1024;
+
+    // Salve referências dos blocos e espaços para usar depois
+    window.blocosPaginacao = [];
 
     for (let i = 0; i < blocos; i++) {
         const bloco = document.createElement("div");
         bloco.className = "subespaco-paginacao";
 
-        // Endereço (sempre ao lado do bloco)
         const endereco = document.createElement("span");
         endereco.textContent = `${i * tamanhoBloco} - ${(i + 1) * tamanhoBloco - 1}`;
         endereco.style.marginRight = "10px";
@@ -218,17 +231,39 @@ const atualizarLabels = () => {
         endereco.style.width = "110px";
         bloco.appendChild(endereco);
 
-        // Espaço visual do bloco
         const espaco = document.createElement("div");
-        espaco.className = "espaco-memoria";
+        espaco.className = "espaco-memoria fila"; // Começa como "em fila"
         espaco.style.width = "120px";
         espaco.style.height = "30px";
-        espaco.style.background = "red";
         espaco.style.border = "1px solid #333";
+        espaco.textContent = `Pagina ${i + 1}`;
         bloco.appendChild(espaco);
 
         labelPaginacao.appendChild(bloco);
+
+        // Salva referência para depois
+        window.blocosPaginacao.push({ bloco, espaco });
     }
 }
+
+function executarPaginacao() {
+    const frameMemoria = document.querySelector(".frame-memoria");
+    if (!window.blocosPaginacao) return;
+
+    window.blocosPaginacao.forEach(({ bloco, espaco }, i) => {
+        setTimeout(() => {
+            frameMemoria.appendChild(espaco);
+
+            setTimeout(() => {
+                espaco.classList.remove('fila');
+                espaco.classList.add('concluida');
+                bloco.appendChild(espaco);
+            }, 3000 + i * 200);
+        }, 500 + i * 200);
+    });
+}
+
+const botaoIniciarPaginacaoExecucao = document.getElementById("iniciar");
+botaoIniciarPaginacaoExecucao.addEventListener("click", executarPaginacao);
     
 });
