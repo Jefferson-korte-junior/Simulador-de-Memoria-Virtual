@@ -3,13 +3,23 @@ document.addEventListener("DOMContentLoaded", function() {
     // Captura os elementos do DOM necessários
     const botaoIniciar = document.getElementById("botao-iniciar"); // Botão para iniciar subrotinas
     const botaoParar = document.getElementById("botao-parar"); // Botão para parar subrotinas
-    const frameMemoria = document.querySelector(".frame-memoria"); // Elemento onde subrotinas serão exibidas
+    //const frameMemoria = document.querySelector(".frame-memoria"); // Elemento onde subrotinas serão exibidas
     const subrotinasAtivas = document.getElementById("subrotinas-ativas"); // Label para exibir subrotinas ativas
     const subrotinasFila = document.getElementById("subrotinas-fila"); // Label para exibir subrotinas na fila
     const subrotinasConcluidas = document.getElementById("subrotinas-concluidas"); // Label para exibir subrotinas concluídas
     const botaoPaginacao = document.getElementById("botao-iniciar-paginacao"); //Botao iniciar paginação
 
     const titulo_memoria = document.getElementById("titulo-memoria"); // Título da memória
+
+    const frameMemoria = document.getElementById("frame-memoria");
+
+    // Quando for Overlay:
+    frameMemoria.classList.remove("paginacao");
+    frameMemoria.classList.add("overlay");
+
+    // Quando for Paginação:
+    frameMemoria.classList.remove("overlay");
+    frameMemoria.classList.add("paginacao");
 
 
     // Variáveis para gerenciamento das subrotinas
@@ -250,17 +260,38 @@ function executarPaginacao() {
     const frameMemoria = document.querySelector(".frame-memoria");
     if (!window.blocosPaginacao) return;
 
-    window.blocosPaginacao.forEach(({ bloco, espaco }, i) => {
-        setTimeout(() => {
-            frameMemoria.appendChild(espaco);
+    maxAtivas = 5;
+    let proxima = 0;
+    let rodando = 0;
 
-            setTimeout(() => {
-                espaco.classList.remove('fila');
-                espaco.classList.add('concluida');
-                bloco.appendChild(espaco);
-            }, 3000 + i * 200);
-        }, 500 + i * 200);
-    });
+    function processarProxima() {
+        if (proxima >= window.blocosPaginacao.length) {
+            return;  // Se todas já foram processadas, pare
+        }
+
+         // Se já tem 5 rodando, não faz nada
+        if (rodando >= maxAtivas) return;
+
+        // Pega o próximo bloco
+        const { bloco, espaco } = window.blocosPaginacao[proxima];
+        proxima++;
+        rodando++;
+
+        frameMemoria.appendChild(espaco);
+
+        setTimeout(() => {
+            espaco.classList.remove('fila');
+            espaco.classList.add('concluida');
+            bloco.appendChild(espaco);
+            rodando--;
+            processarProxima(); // Chama para preencher a vaga liberada
+        }, 3000);
+
+        // Enquanto houver vaga, já chama para preencher
+        processarProxima();
+    }
+
+    processarProxima();
 }
 
 const botaoIniciarPaginacaoExecucao = document.getElementById("iniciar");
