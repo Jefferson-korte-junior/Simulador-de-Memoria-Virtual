@@ -1,7 +1,8 @@
 // Aguarda o carregamento completo do DOM antes de executar o código
 document.addEventListener("DOMContentLoaded", function() {
+    const botaoIniciar = document.getElementById("botao-iniciar");
     // Captura os elementos do DOM necessários
-    const botaoIniciar = document.getElementById("botao-iniciar"); // Botão para iniciar subrotinas
+    const botaoIniciaroverlay = document.getElementById("botao-iniciar-overlay"); // Botão para iniciar subrotinas
     const botaoParar = document.getElementById("botao-parar"); // Botão para parar subrotinas
     //const frameMemoria = document.querySelector(".frame-memoria"); // Elemento onde subrotinas serão exibidas
     const subrotinasAtivas = document.getElementById("subrotinas-ativas"); // Label para exibir subrotinas ativas
@@ -12,6 +13,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const titulo_memoria = document.getElementById("titulo-memoria"); // Título da memória
 
     const frameMemoria = document.getElementById("frame-memoria");
+
+    //Para esconder todas as labels quando inicia o programa
+    subrotinasAtivas.style.display = "none";
+    subrotinasFila.style.display = "none";
+    subrotinasConcluidas.style.display = "none";
+    document.getElementById("label-paginacao").style.display = "none";
+    document.getElementById("label-paginacao-concluidas").style.display = "none";
 
     // Quando for Overlay:
     frameMemoria.classList.remove("paginacao");
@@ -180,14 +188,36 @@ const atualizarLabels = () => {
         const cores = ["#FFADAD", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#9BF6FF", "#FF4040"];
         return cores[Math.floor(Math.random() * cores.length)];
     };
+    
+    let modoAtual = null; // Variável para armazenar o modo atual (overlay ou paginação)
 
+    botaoIniciar.addEventListener("click", () => {
+    if (modoAtual === "overlay") {
+        iniciarSubrotinas();
+    } else if (modoAtual === "paginacao") {
+        executarPaginacao();
+    }
+    
+    });
 
     // Adiciona evento de clique ao botão de iniciar
-    botaoIniciar.addEventListener("click", () => {
+    botaoIniciaroverlay.addEventListener("click", () => {
         pararSubrotinas(); // Limpa a memória antes de iniciar
         configurarSubrotinas(); // Prepara as subrotinas iniciais
-        iniciarSubrotinas(); // Inicia a execução das subrotinas
+
+        // Mostra as labels do overlay
+        subrotinasAtivas.style.display = "flex";
+        subrotinasFila.style.display = "flex";
+        subrotinasConcluidas.style.display = "flex";
+
+        // Esconde as labels da paginação
+        document.getElementById("label-paginacao").style.display = "none";
+        document.getElementById("label-paginacao-concluidas").style.display = "none";
+
+        modoAtual = "overlay"; // Define o modo atual como overlay
     });
+
+    
 
 
     // Adiciona evento de clique ao botão de parar
@@ -214,8 +244,11 @@ const atualizarLabels = () => {
 
         // Mostra a label de paginação
         document.getElementById("label-paginacao").style.display = "flex";
+        document.getElementById("label-paginacao-concluidas").style.display = "flex";
+
 
         preencherPaginacao();
+        modoAtual = "paginacao"; // Define o modo atual como paginação
         
     });
 
@@ -258,6 +291,7 @@ const atualizarLabels = () => {
 
 function executarPaginacao() {
     const frameMemoria = document.querySelector(".frame-memoria");
+    const labelPaginacaoConcluidas = document.getElementById("label-paginacao-concluidas");
     if (!window.blocosPaginacao) return;
 
     maxAtivas = 5;
@@ -277,12 +311,22 @@ function executarPaginacao() {
         proxima++;
         rodando++;
 
-        frameMemoria.appendChild(espaco);
+        const blocoClone = bloco.cloneNode(true);
+        const espacoClone = blocoClone.querySelector('.espaco-memoria');
+        frameMemoria.appendChild(espacoClone);
 
         setTimeout(() => {
-            espaco.classList.remove('fila');
-            espaco.classList.add('concluida');
-            bloco.appendChild(espaco);
+            espacoClone.classList.remove('fila');
+            espacoClone.classList.add('concluida');
+
+            const blocoConcluido = bloco.cloneNode(true);
+            blocoConcluido.innerHTML = "";
+            const endereco = bloco.querySelector('span').cloneNode(true);
+            blocoConcluido.appendChild(endereco);
+            blocoConcluido.appendChild(espacoClone);
+
+            labelPaginacaoConcluidas.appendChild(blocoConcluido);
+
             rodando--;
             processarProxima(); // Chama para preencher a vaga liberada
         }, 3000);
@@ -294,7 +338,6 @@ function executarPaginacao() {
     processarProxima();
 }
 
-const botaoIniciarPaginacaoExecucao = document.getElementById("iniciar");
-botaoIniciarPaginacaoExecucao.addEventListener("click", executarPaginacao);
+
     
 });

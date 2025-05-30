@@ -133,7 +133,19 @@ button:hover {
     align-items: flex-start;
     gap: 0;
     height: 450px;
+    width: 350px;
     overflow-y: auto;  
+    border-radius: 20px;
+}
+
+#label-paginacao-concluidas {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    height: 450px;
+    width: 350px;
+    overflow-y: auto;  
+    border-radius: 20px;
 }
 
 .subespaco-paginacao {
@@ -165,3 +177,4 @@ button:hover {
     text-align: center;
     
 }
+
