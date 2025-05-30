@@ -11,6 +11,28 @@ body {
     padding: 20px;
 }
 
+.rotina-principal {
+    background-color: rgb(210, 231, 73);
+    width: 20%;
+    height: 60px;
+    float: left;
+    text-align: center;
+    padding: 19px;
+    border: 2px solid #555;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.frame-memoria .espaco-memoria{
+    width: 300px !important; 
+    height: 100px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+}
+
 .frame-memoria.paginacao {
     display: flex;
     background-color: #f0f0f0;
@@ -37,6 +59,13 @@ body {
     border: 5px solid black;
 }
 
+.frame-memoria .subrotina {
+    width: 220px;
+    height: 83px;
+    font-size: 18px;
+    margin: 4px 4px 0 0;
+}
+
 .frame-botoes {
     margin: 20px auto;
 }
@@ -55,6 +84,14 @@ button:hover {
     background-color: #700a0a;
 }
 
+#subrotinas-ativas .subrotina,
+#subrotinas-fila .subrotina,
+#subrotinas-concluidas .subrotina {
+    width: 60px;
+    height: 40px;
+    font-size: 13px;
+}
+
 .frame-subrotinas {
     display: flex;
     justify-content: space-around;
@@ -62,47 +99,38 @@ button:hover {
 }
 
 .subrotinas {
-    width: 30%;
+    width: 500px;
     height: 300px; /* Define uma altura fixa */
     background-color: #635f5ffd;
     border: 3px solid #000000;
-    border-radius: 5px;
+    border-radius: 20px;
     display: flex;
     flex-wrap: wrap; /* Empilha os itens verticalmente */
     justify-content: flex-start;
+    align-items: flex-start;
     padding: 10px;
     color: white;
     overflow-y: auto; /* Adiciona barra de rolagem vertical */
     overflow-x: hidden; /* Remove barra de rolagem horizontal */
-    gap: 0px; /* Espaçamento entre as subrotinas */
+    gap: 4px 4px; /* Espaçamento entre as subrotinas */
 }
 
-.rotina-principal {
-    background-color: rgb(210, 231, 73);
-    width: 20%;
-    height: 60px;
-    float: left;
-    text-align: center;
-    padding: 19px;
-    border: 2px solid #555;
-    border-radius: 5px;
-    margin-right: 10px;
-}
+
 
 .subrotina {
-    flex: 1 1 calc(20% - 10px);
-    width: calc(33.33% - 10px);
-    height: 80px;
-    float: left;
-    text-align: center;
+    width: 60px;
+    height: 40px;
+    margin: 4px 4px 0 0; /* margem pequena entre elas */
     padding: 5px;
     border: 2px solid #555;
     border-radius: 5px;
-    margin-right: 10px;
     background-color: #3496ff;
     display: flex;
-    justify-content: center; /* Alinha o texto horizontalmente */
+    justify-content: center;
     align-items: center;
+    text-align: center;
+    float: none;
+    flex: none;
 }
 
 
@@ -168,13 +196,5 @@ button:hover {
     background-color: green;
 }
 
-.frame-memoria .espaco-memoria{
-    width: 300px !important; 
-    height: 100px !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    
-}
+
 

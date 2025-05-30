@@ -214,17 +214,31 @@ const atualizarLabels = () => {
         document.getElementById("label-paginacao").style.display = "none";
         document.getElementById("label-paginacao-concluidas").style.display = "none";
 
+        document.getElementById("titulo-memoria").textContent = "Memória Física";
+
+
         modoAtual = "overlay"; // Define o modo atual como overlay
     });
 
-    
-
-
-    // Adiciona evento de clique ao botão de parar
     botaoParar.addEventListener("click", () => {
-        pararSubrotinas(); // Interrompe e limpa as subrotinas
-        overlayEmExecucao = false; // Reseta flag de execução
-    });
+    pararSubrotinas(); // Limpa tudo
+
+    // Esconde todas as labels
+    subrotinasAtivas.style.display = "none";
+    subrotinasFila.style.display = "none";
+    subrotinasConcluidas.style.display = "none";
+    document.getElementById("label-paginacao").style.display = "none";
+    document.getElementById("label-paginacao-concluidas").style.display = "none";
+
+    // Limpa o frame de memória
+    frameMemoria.innerHTML = "";
+
+    // Reseta o modo atual
+    modoAtual = null;
+
+    // (Opcional) Reseta o título
+    titulo_memoria.textContent = "MEMÓRIA";
+});
 
 
 //--------------------------------------------------------------------
@@ -245,6 +259,16 @@ const atualizarLabels = () => {
         // Mostra a label de paginação
         document.getElementById("label-paginacao").style.display = "flex";
         document.getElementById("label-paginacao-concluidas").style.display = "flex";
+
+         // Limpa as labels de paginação para estado inicial
+        document.getElementById("label-paginacao").innerHTML = "Paginação:";
+        document.getElementById("label-paginacao-concluidas").innerHTML = "Paginação Concluídas:";
+
+        // Limpa o frame de memória
+        frameMemoria.innerHTML = "";
+
+         // Reseta blocos de paginação
+        window.blocosPaginacao = [];
 
 
         preencherPaginacao();
