@@ -234,6 +234,8 @@ const atualizarLabels = () => {
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
 
+let paginaçãoEmExecucao = false; // Flag para verificar se a paginação está em execução
+
     botaoPaginacao.addEventListener("click", () => {
         // Esconde as labels normais
         subrotinasAtivas.style.display = "none";
@@ -294,49 +296,62 @@ function executarPaginacao() {
     const labelPaginacaoConcluidas = document.getElementById("label-paginacao-concluidas");
     if (!window.blocosPaginacao) return;
 
-    maxAtivas = 5;
+    const maxAtivas = 5;
     let proxima = 0;
     let rodando = 0;
 
     function processarProxima() {
-        if (proxima >= window.blocosPaginacao.length) {
-            return;  // Se todas já foram processadas, pare
-        }
-
-         // Se já tem 5 rodando, não faz nada
+        if (proxima >= window.blocosPaginacao.length) return;
         if (rodando >= maxAtivas) return;
 
-        // Pega o próximo bloco
         const { bloco, espaco } = window.blocosPaginacao[proxima];
         proxima++;
         rodando++;
 
+        // Tempo aleatório entre 5 e 15 segundos
+        let tempoRestante = Math.floor(Math.random() * 10) + 5;
+
+        // Cria clone e elemento de tempo
         const blocoClone = bloco.cloneNode(true);
         const espacoClone = blocoClone.querySelector('.espaco-memoria');
+        const tempoElemento = document.createElement("div");
+        tempoElemento.className = "tempo-restante";
+        tempoElemento.textContent = `${tempoRestante}s`;
+        espacoClone.appendChild(tempoElemento);
+
         frameMemoria.appendChild(espacoClone);
 
-        setTimeout(() => {
-            espacoClone.classList.remove('fila');
-            espacoClone.classList.add('concluida');
+        // Contador de tempo
+        const atualizarTempo = () => {
+            if (tempoRestante > 0) {
+                tempoRestante--;
+                tempoElemento.textContent = `${tempoRestante}s`;
+                setTimeout(atualizarTempo, 1000);
+            } else {
+                espacoClone.classList.remove('fila');
+                espacoClone.classList.add('concluida');
 
-            const blocoConcluido = bloco.cloneNode(true);
-            blocoConcluido.innerHTML = "";
-            const endereco = bloco.querySelector('span').cloneNode(true);
-            blocoConcluido.appendChild(endereco);
-            blocoConcluido.appendChild(espacoClone);
+                const blocoConcluido = bloco.cloneNode(true);
+                blocoConcluido.innerHTML = "";
 
-            labelPaginacaoConcluidas.appendChild(blocoConcluido);
+                const endereco = bloco.querySelector('span').cloneNode(true);
+                blocoConcluido.appendChild(endereco);
+                blocoConcluido.appendChild(espacoClone);
 
-            rodando--;
-            processarProxima(); // Chama para preencher a vaga liberada
-        }, 3000);
+                labelPaginacaoConcluidas.appendChild(blocoConcluido);
 
-        // Enquanto houver vaga, já chama para preencher
-        processarProxima();
+                rodando--;
+                processarProxima(); // Preenche a vaga que ficou livre
+            }
+        };
+
+        atualizarTempo(); // Inicia contagem
+        processarProxima(); // Verifica se ainda há espaço para mais subrotinas
     }
 
     processarProxima();
 }
+
 
 
     
