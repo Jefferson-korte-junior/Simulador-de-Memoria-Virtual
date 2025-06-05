@@ -260,7 +260,7 @@ let paginacaoEmExecucao = false; // Flag para verificar se a paginação está e
         subrotinasFila.style.display = "none";
         subrotinasConcluidas.style.display = "none";
 
-        titulo_memoria.textContent = "Memória Virtual"; // Altera o título da memória
+        titulo_memoria.textContent = "Memória Fisica"; // Altera o título da memória
 
         // Mostra a label de paginação
         document.getElementById("label-paginacao").style.display = "flex";
@@ -360,10 +360,13 @@ function executarPaginacao() {
             if (tempoRestante > 0) {
                 tempoRestante--;
                 tempoElemento.textContent = `${tempoRestante}s`;
+                
                 setTimeout(atualizarTempo, 1000);
             } else {
                 espacoClone.classList.remove('fila');
                 espacoClone.classList.add('concluida');
+
+                tempoElemento.remove(); // Remove o elemento de tempo
 
                 const blocoConcluido = bloco.cloneNode(true);
                 blocoConcluido.innerHTML = "";
