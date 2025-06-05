@@ -131,6 +131,8 @@ button:hover {
     text-align: center;
     float: none;
     flex: none;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -186,6 +188,10 @@ button:hover {
 .espaco-memoria {
     border-radius: 4px;
     margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .espaco-memoria.fila {

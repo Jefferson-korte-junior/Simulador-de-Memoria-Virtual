@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Função para iniciar as subrotinas
     const iniciarSubrotinas = () => {
-        if (overlayEmExecucao) return; // Verifica se já está em execução
+        if (overlayEmExecucao || paginacaoEmExecucao) return; // Verifica se já está em execução
 
         overlayEmExecucao = true; // Define flag de execução
 
@@ -147,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
         temposRestantes = {}; // Reseta tempos restantes
         rotinaPrincipalConcluida = false; // Reseta estado da rotina principal
         overlayEmExecucao = false; // Reseta flag de execução
+        paginacaoEmExecucao = false; // Reseta flag de paginação
         atualizarLabels(); // Atualiza os labels
     };
 
@@ -192,6 +193,9 @@ const atualizarLabels = () => {
     let modoAtual = null; // Variável para armazenar o modo atual (overlay ou paginação)
 
     botaoIniciar.addEventListener("click", () => {
+
+    if (overlayEmExecucao || paginacaoEmExecucao) return;
+    
     if (modoAtual === "overlay") {
         iniciarSubrotinas();
     } else if (modoAtual === "paginacao") {
@@ -248,7 +252,7 @@ const atualizarLabels = () => {
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
 
-let paginaçãoEmExecucao = false; // Flag para verificar se a paginação está em execução
+let paginacaoEmExecucao = false; // Flag para verificar se a paginação está em execução
 
     botaoPaginacao.addEventListener("click", () => {
         // Esconde as labels normais
@@ -316,6 +320,10 @@ let paginaçãoEmExecucao = false; // Flag para verificar se a paginação está
 }
 
 function executarPaginacao() {
+    if (overlayEmExecucao || paginacaoEmExecucao) return; // Impede paginação se overlay está ativo
+
+    paginacaoEmExecucao = true;
+
     const frameMemoria = document.querySelector(".frame-memoria");
     const labelPaginacaoConcluidas = document.getElementById("label-paginacao-concluidas");
     if (!window.blocosPaginacao) return;
@@ -326,6 +334,8 @@ function executarPaginacao() {
 
     function processarProxima() {
         if (proxima >= window.blocosPaginacao.length) return;
+            if (rodando == 0) paginacaoEmExecucao = false;
+
         if (rodando >= maxAtivas) return;
 
         const { bloco, espaco } = window.blocosPaginacao[proxima];
@@ -366,6 +376,10 @@ function executarPaginacao() {
 
                 rodando--;
                 processarProxima(); // Preenche a vaga que ficou livre
+
+                if (proxima >= window.blocosPaginacao.length && rodando === 0) {
+                    paginacaoEmExecucao = false; // Libera flag ao terminar tudo
+                }
             }
         };
 
