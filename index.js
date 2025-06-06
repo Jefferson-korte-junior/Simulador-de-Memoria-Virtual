@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     subrotinasFila.style.display = "none";
     subrotinasConcluidas.style.display = "none";
     document.getElementById("label-paginacao").style.display = "none";
+    document.getElementById("label-paginacao-ativas").style.display = "none";
     document.getElementById("label-paginacao-concluidas").style.display = "none";
 
     // Quando for Overlay:
@@ -216,6 +217,7 @@ const atualizarLabels = () => {
 
         // Esconde as labels da paginação
         document.getElementById("label-paginacao").style.display = "none";
+        document.getElementById("label-paginacao-ativas").style.display = "none";
         document.getElementById("label-paginacao-concluidas").style.display = "none";
 
         document.getElementById("titulo-memoria").textContent = "Memória Física";
@@ -232,6 +234,7 @@ const atualizarLabels = () => {
     subrotinasFila.style.display = "none";
     subrotinasConcluidas.style.display = "none";
     document.getElementById("label-paginacao").style.display = "none";
+    document.getElementById("label-paginacao-ativas").style.display = "none";
     document.getElementById("label-paginacao-concluidas").style.display = "none";
 
     // Limpa o frame de memória
@@ -264,10 +267,12 @@ let paginacaoEmExecucao = false; // Flag para verificar se a paginação está e
 
         // Mostra a label de paginação
         document.getElementById("label-paginacao").style.display = "flex";
+        document.getElementById("label-paginacao-ativas").style.display = "flex";
         document.getElementById("label-paginacao-concluidas").style.display = "flex";
 
          // Limpa as labels de paginação para estado inicial
         document.getElementById("label-paginacao").innerHTML = "Paginação:";
+        document.getElementById("label-paginacao-ativas").innerHTML = "Ativas:";
         document.getElementById("label-paginacao-concluidas").innerHTML = "Paginação Concluídas:";
 
         // Limpa o frame de memória
@@ -392,8 +397,5 @@ function executarPaginacao() {
 
     processarProxima();
 }
-
-
-
-    
+  
 });
