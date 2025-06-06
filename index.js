@@ -379,8 +379,8 @@ function executarPaginacao() {
         blocoAtivo.setAttribute("data-id", idAtual);
 
         const espacoAtivo = blocoAtivo.querySelector('.espaco-memoria');
-        espacoAtivo.classList.remove('fila');
-        espacoAtivo.classList.add('espera');
+        espacoAtivo.classList.remove('fila', 'concluida', 'espera');
+        espacoAtivo.classList.add('ativa');
 
         const tempoElementoAtivo = document.createElement("div");
         tempoElementoAtivo.className = "tempo-restante";
@@ -391,6 +391,7 @@ function executarPaginacao() {
         blocoAtivo.innerHTML = "";
         blocoAtivo.appendChild(enderecoAtivo);
         blocoAtivo.appendChild(espacoAtivo);
+        
 
         labelPaginacaoAtivas.appendChild(blocoAtivo);
 

@@ -214,5 +214,11 @@ button:hover {
     background-color: green;
 }
 
+.espaco-memoria.ativa {
+    background-color: yellow;
+    color: #333;
+    border: 2px solid #e6c200;
+}
+
 
 
