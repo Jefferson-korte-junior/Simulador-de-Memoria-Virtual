@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     subrotinasAtivas.style.display = "none";
     subrotinasFila.style.display = "none";
     subrotinasConcluidas.style.display = "none";
+
     document.getElementById("label-paginacao").style.display = "none";
     document.getElementById("label-paginacao-ativas").style.display = "none";
     document.getElementById("label-paginacao-concluidas").style.display = "none";
@@ -325,77 +326,124 @@ let paginacaoEmExecucao = false; // Flag para verificar se a paginação está e
 }
 
 function executarPaginacao() {
-    if (overlayEmExecucao || paginacaoEmExecucao) return; // Impede paginação se overlay está ativo
+    if (overlayEmExecucao || paginacaoEmExecucao) return;
 
     paginacaoEmExecucao = true;
 
     const frameMemoria = document.querySelector(".frame-memoria");
+    const labelPaginacaoFila = document.getElementById("label-paginacao");
+    const labelPaginacaoAtivas = document.getElementById("label-paginacao-ativas");
     const labelPaginacaoConcluidas = document.getElementById("label-paginacao-concluidas");
+
     if (!window.blocosPaginacao) return;
 
     const maxAtivas = 5;
     let proxima = 0;
     let rodando = 0;
+    let idGlobal = 0;
 
     function processarProxima() {
         if (proxima >= window.blocosPaginacao.length) return;
-            if (rodando == 0) paginacaoEmExecucao = false;
+        if (rodando === 0 && proxima >= window.blocosPaginacao.length) {
+            paginacaoEmExecucao = false;
+            return;
+        }
 
         if (rodando >= maxAtivas) return;
 
         const { bloco, espaco } = window.blocosPaginacao[proxima];
+        const idAtual = `bloco-${idGlobal++}`;
         proxima++;
         rodando++;
 
-        // Tempo aleatório entre 5 e 15 segundos
         let tempoRestante = Math.floor(Math.random() * 10) + 5;
 
-        // Cria clone e elemento de tempo
-        const blocoClone = bloco.cloneNode(true);
-        const espacoClone = blocoClone.querySelector('.espaco-memoria');
-        const tempoElemento = document.createElement("div");
-        tempoElemento.className = "tempo-restante";
-        tempoElemento.textContent = `${tempoRestante}s`;
-        espacoClone.appendChild(tempoElemento);
+        // FRAME MEMÓRIA
+        const blocoMemoria = bloco.cloneNode(true);
+        blocoMemoria.setAttribute("data-id", idAtual);
 
-        frameMemoria.appendChild(espacoClone);
+        const espacoMemoria = blocoMemoria.querySelector('.espaco-memoria');
+        espacoMemoria.classList.remove('fila');
+        espacoMemoria.classList.add('espera');
 
-        // Contador de tempo
+        const spanEndereco = blocoMemoria.querySelector('span');
+        if (spanEndereco) spanEndereco.remove();
+
+        const tempoAnterior = espacoMemoria.querySelector('.tempo-restante');
+        if (tempoAnterior) tempoAnterior.remove();
+
+        frameMemoria.appendChild(blocoMemoria);
+
+        // LABEL ATIVAS
+        const blocoAtivo = bloco.cloneNode(true);
+        blocoAtivo.setAttribute("data-id", idAtual);
+
+        const espacoAtivo = blocoAtivo.querySelector('.espaco-memoria');
+        espacoAtivo.classList.remove('fila');
+        espacoAtivo.classList.add('espera');
+
+        const tempoElementoAtivo = document.createElement("div");
+        tempoElementoAtivo.className = "tempo-restante";
+        tempoElementoAtivo.textContent = `${tempoRestante}s`;
+        espacoAtivo.appendChild(tempoElementoAtivo);
+
+        const enderecoAtivo = bloco.querySelector('span').cloneNode(true);
+        blocoAtivo.innerHTML = "";
+        blocoAtivo.appendChild(enderecoAtivo);
+        blocoAtivo.appendChild(espacoAtivo);
+
+        labelPaginacaoAtivas.appendChild(blocoAtivo);
+
         const atualizarTempo = () => {
             if (tempoRestante > 0) {
                 tempoRestante--;
-                tempoElemento.textContent = `${tempoRestante}s`;
-                
+                tempoElementoAtivo.textContent = `${tempoRestante}s`;
                 setTimeout(atualizarTempo, 1000);
             } else {
-                espacoClone.classList.remove('fila');
-                espacoClone.classList.add('concluida');
+                // REMOVER do frame-memoria e label de ativas
+                const blocoMemoriaFinal = frameMemoria.querySelector(`[data-id="${idAtual}"]`);
+                if (blocoMemoriaFinal) blocoMemoriaFinal.remove();
 
-                tempoElemento.remove(); // Remove o elemento de tempo
+                const blocoAtivoFinal = labelPaginacaoAtivas.querySelector(`[data-id="${idAtual}"]`);
+                if (blocoAtivoFinal) blocoAtivoFinal.remove();
 
+                // LABEL CONCLUÍDAS
                 const blocoConcluido = bloco.cloneNode(true);
-                blocoConcluido.innerHTML = "";
+                blocoConcluido.setAttribute("data-id", idAtual);
 
-                const endereco = bloco.querySelector('span').cloneNode(true);
-                blocoConcluido.appendChild(endereco);
-                blocoConcluido.appendChild(espacoClone);
+                const espacoConcluido = blocoConcluido.querySelector('.espaco-memoria');
+                espacoConcluido.classList.remove('fila');
+                espacoConcluido.classList.add('concluida');
+
+                const tempoElementoFinal = document.createElement("div");
+                tempoElementoFinal.className = "tempo-restante";
+                tempoElementoFinal.textContent = "✓";
+                espacoConcluido.appendChild(tempoElementoFinal);
+
+                const enderecoConcluido = bloco.querySelector('span').cloneNode(true);
+                blocoConcluido.innerHTML = "";
+                blocoConcluido.appendChild(enderecoConcluido);
+                blocoConcluido.appendChild(espacoConcluido);
 
                 labelPaginacaoConcluidas.appendChild(blocoConcluido);
 
                 rodando--;
-                processarProxima(); // Preenche a vaga que ficou livre
+                processarProxima();
 
                 if (proxima >= window.blocosPaginacao.length && rodando === 0) {
-                    paginacaoEmExecucao = false; // Libera flag ao terminar tudo
+                    paginacaoEmExecucao = false;
                 }
             }
         };
 
-        atualizarTempo(); // Inicia contagem
-        processarProxima(); // Verifica se ainda há espaço para mais subrotinas
+        atualizarTempo();
+        processarProxima();
     }
 
     processarProxima();
 }
+
+
+
   
 });
