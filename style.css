@@ -12,15 +12,18 @@ body {
 }
 
 .rotina-principal {
-    background-color: rgb(210, 231, 73);
+    background-color: rgb(245, 136, 28);
     width: 20%;
-    height: 60px;
+    height: 100px;
     float: left;
-    text-align: center;
     padding: 19px;
     border: 2px solid #555;
     border-radius: 5px;
     margin-right: 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-align: center;
 }
 
 .frame-memoria .espaco-memoria{
@@ -63,7 +66,7 @@ body {
 
 .frame-memoria .subrotina {
     width: 220px;
-    height: 83px;
+    height: 120px;
     font-size: 18px;
     margin: 4px 4px 0 0;
 }
@@ -114,15 +117,15 @@ button:hover {
     color: white;
     overflow-y: auto; /* Adiciona barra de rolagem vertical */
     overflow-x: hidden; /* Remove barra de rolagem horizontal */
-    gap: 4px 4px; /* Espaçamento entre as subrotinas */
+    gap: 1px 4px; /* Espaçamento entre as subrotinas */
 }
 
 
 
 .subrotina {
     width: 60px;
-    height: 40px;
-    margin: 4px 4px 0 0; /* margem pequena entre elas */
+    height: 60px;
+    margin: 1px 2px 0 0; /* margem pequena entre elas */
     padding: 5px;
     border: 2px solid #555;
     border-radius: 5px;
