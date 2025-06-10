@@ -221,6 +221,8 @@ button:hover {
 }
 
 .frame-memoria.paginacao .espaco-memoria {
+    background-color: #f2e206 !important;
+    color: #000000 !important;
     width: 300px !important;
     height: 100px !important;
     margin: 0;
